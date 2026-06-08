@@ -10,7 +10,7 @@
 <style>
 :root{
   /* ---- THEME BEIGE / BLANC CASSÉ ---- */
-  --bg:#E8E4DC; --bg-2:#E1DDD3; --paper:#F2EFE9;
+  --bg:#FCFCF7; --bg-2:#E1DDD3; --paper:#F2EFE9;
   --ink:#1C1813; --ink-2:#403930; --muted:#8C8170; --muted-2:#A89D8A;
   --gold:#A8822E; --gold-bright:#C9A84C; --gold-soft:#D9C07E;
   --espresso:#16130E; --cream:#F5F1E8;
@@ -59,9 +59,16 @@ p.lead{font-size:clamp(1rem,1.4vw,1.16rem);color:var(--ink-2);font-weight:300}
 /* ANNOUNCE / URGENCE */
 .announce{position:fixed;top:0;left:0;right:0;z-index:60;background:var(--espresso);color:var(--cream);text-align:center;padding:9px 16px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
 .announce b{color:var(--gold-bright);font-weight:500}
-.countdown{display:inline-flex;gap:6px;align-items:center}
-.cd-box{background:rgba(201,168,76,.16);border:1px solid rgba(201,168,76,.3);border-radius:3px;padding:3px 7px;font-family:var(--sans);font-weight:500;color:var(--cream);min-width:30px;display:inline-block;text-align:center}
-.cd-box span{font-size:8px;display:block;color:var(--muted-2);letter-spacing:.08em}
+.countdown{display:inline-flex;gap:7px;align-items:flex-end}
+.cd-box{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(201,168,76,.16);border:1px solid rgba(201,168,76,.34);border-radius:5px;padding:5px 9px;min-width:42px;color:var(--cream);text-align:center}
+.cd-box b{font-family:var(--sans);font-weight:600;font-size:18px;line-height:1;letter-spacing:.02em}
+.cd-box span{font-size:8px;display:block;color:var(--muted-2);letter-spacing:.12em;margin-top:2px}
+/* variante claire dans le panneau prix */
+.pp-countdown{display:flex;justify-content:center;gap:8px;margin-bottom:20px}
+.pp-cd-label{display:block;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.price-panel .cd-box{background:rgba(168,130,46,.1);border-color:rgba(168,130,46,.38);color:var(--ink)}
+.price-panel .cd-box b{color:var(--gold);font-size:20px}
+.price-panel .cd-box span{color:var(--muted)}
 
 nav{position:fixed;top:36px;left:0;right:0;z-index:50;transition:all .4s;border-bottom:1px solid transparent}
 nav.scrolled{background:rgba(235,227,210,.86);backdrop-filter:blur(18px);border-bottom:1px solid var(--line-soft)}
@@ -110,10 +117,11 @@ section{position:relative;z-index:2}
 
 /* PACK */
 .offer{padding:30px 0 96px}
-.offer-box{position:relative;border-radius:12px;overflow:hidden;background:#D6D2C7;border:1px solid rgba(168,130,46,.3);box-shadow:0 40px 90px rgba(28,20,8,.14)}
+.offer-box{position:relative;border-radius:12px;overflow:hidden;background:#F6F4EE;border:1px solid rgba(168,130,46,.3);box-shadow:0 40px 90px rgba(28,20,8,.12)}
 .offer-box::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 84% 0%,rgba(168,130,46,.10),transparent 55%);pointer-events:none}
 .offer-inner{display:grid;grid-template-columns:1fr .82fr;gap:46px;padding:56px;align-items:center;position:relative}
-.offer-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(168,130,46,.12);border:1px solid var(--line);color:var(--gold);padding:8px 17px;border-radius:40px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:20px}
+.offer-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(168,130,46,.12);border:1px solid var(--line);color:var(--gold);padding:9px 19px;border-radius:40px;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:20px}
+.offer-badge .save{font-size:1.18em;font-weight:600;letter-spacing:.02em}
 .offer-inner h2{margin-bottom:16px}
 .offer-includes{list-style:none;margin:24px 0 0}
 .offer-includes li{display:flex;align-items:center;gap:13px;padding:13px 0;border-bottom:1px solid var(--line-soft);font-size:1rem;color:var(--ink);letter-spacing:.03em}
@@ -151,7 +159,8 @@ section{position:relative;z-index:2}
 .guar-row{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
 .guar{flex:1;min-width:210px;text-align:center;padding:28px 18px;border:1px solid var(--line-soft);border-radius:8px;transition:all .5s;background:var(--paper)}
 .guar:hover{border-color:var(--line);transform:translateY(-5px)}
-.guar .gi{font-size:20px;color:var(--gold);margin-bottom:10px}
+.guar .gi{font-size:20px;color:var(--gold);margin-bottom:12px;line-height:0}
+.guar .gi svg{width:27px;height:27px;display:inline-block}
 .guar h4{font-size:1.05rem;color:var(--ink);margin-bottom:5px;font-family:var(--serif);font-weight:600}
 .guar p{font-size:.8rem;color:var(--muted)}
 
@@ -195,7 +204,9 @@ footer{border-top:1px solid var(--line-soft);padding:48px 0 34px;background:var(
 @media(max-width:680px){
   .wrap{padding:0 20px}.nav-inner{padding:14px 20px}
   .announce{font-size:9px;letter-spacing:.05em;gap:7px;padding:8px 10px}
-  .cd-box{padding:2px 5px;min-width:26px}
+  .cd-box{padding:3px 6px;min-width:34px}
+  .cd-box b{font-size:14px}.cd-box span{font-size:7px}
+  .price-panel .cd-box b{font-size:16px}
   .sec{padding:60px 0}
   .hero{min-height:auto;padding:128px 0 50px}
   .brandmark{font-size:clamp(3rem,16vw,4.6rem)}
@@ -227,10 +238,10 @@ footer{border-top:1px solid var(--line-soft);padding:48px 0 34px;background:var(
 <div class="announce">
   <span>✦ <b>Offre de lancement</b> — économise 84€</span>
   <span class="countdown" id="cd">
-    <span class="cd-box"><span id="cd-j">05</span>J</span>
-    <span class="cd-box"><span id="cd-h">00</span>H</span>
-    <span class="cd-box"><span id="cd-m">00</span>M</span>
-    <span class="cd-box"><span id="cd-s">00</span>S</span>
+    <span class="cd-box"><b class="js-j">06</b><span>Jours</span></span>
+    <span class="cd-box"><b class="js-h">00</b><span>H</span></span>
+    <span class="cd-box"><b class="js-m">00</b><span>Min</span></span>
+    <span class="cd-box"><b class="js-s">00</b><span>Sec</span></span>
   </span>
 </div>
 
@@ -238,7 +249,7 @@ footer{border-top:1px solid var(--line-soft);padding:48px 0 34px;background:var(
   <div class="nav-inner">
     <div class="logo">ÉMIA<span>.</span></div>
     <div class="nav-links">
-      <a href="#pack">La Méthode</a>
+      <a href="#pack">ÉMIA Method</a>
       <a href="#volumes">Les Volumes</a>
       <a href="#faq">FAQ</a>
       <a href="#pack" class="nav-cta">Commencer</a>
@@ -249,14 +260,14 @@ footer{border-top:1px solid var(--line-soft);padding:48px 0 34px;background:var(
 <!-- HERO -->
 <section class="hero">
   <div class="wrap">
-    <div class="brandmark reveal">ÉMIA<span class="dot">.</span></div>
+    <div class="brandmark reveal">ÉMIA</div>
     <div class="brand-sub reveal d1">Évolution · Mindset · Intention · Alignment</div>
     <h1 class="reveal d1">Une silhouette sculptée.<br>Une énergie alignée. <em>Une présence magnétique.</em></h1>
-    <p class="lead reveal d2">Découvre la méthode ÉMIA : un parcours complet pour apprendre à prendre soin de toi avec intention, discipline et élégance.</p>
+    <p class="lead reveal d2">Découvre la ÉMIA Method : un parcours complet pour apprendre à prendre soin de toi avec intention, discipline et élégance.</p>
     <div class="hero-actions reveal d3">
       <a href="#pack" class="btn btn-gold">Commencer ma transformation <span class="arrow">→</span></a>
     </div>
-    <div class="hero-note reveal d4">Trois volumes premium</div>
+    <div class="hero-note reveal d4">Trois volumes prestige</div>
     <div class="books-row reveal d2">
       <div class="book"><div class="book-cover"></div></div>
       <div class="book"><div class="book-cover"></div></div>
@@ -271,12 +282,12 @@ footer{border-top:1px solid var(--line-soft);padding:48px 0 34px;background:var(
     <div class="offer-box reveal">
       <div class="offer-inner">
         <div>
-          <span class="offer-badge">★ Offre de lancement · -84€</span>
-          <h2>La Méthode <span class="italic">ÉMIA</span></h2>
+          <span class="offer-badge">★ Offre de lancement · <span class="save">−84€</span></span>
+          <h2>ÉMIA <span class="italic">Method</span></h2>
           <p class="lead">Le parcours signature ÉMIA. Une méthode pensée pour cultiver l'élégance, la discipline et la confiance dans chaque aspect de ta vie.</p>
           <ul class="offer-includes">
             <li><span class="ic">✓</span><div>ÉMIA BODY<small>L'art de sculpter ton corps avec intention · valeur 147€</small></div></li>
-            <li><span class="ic">✓</span><div>ÉMIA NUTRITION<small>Une alimentation pensée pour faire rayonner · valeur 67€</small></div></li>
+            <li><span class="ic">✓</span><div>ÉMIA NUTRITION<small>Une alimentation pour te faire rayonner · valeur 67€</small></div></li>
             <li><span class="ic">✓</span><div>ÉMIA GLOW<small>Le luxe d'une femme pleinement alignée · valeur 67€</small></div></li>
           </ul>
         </div>
@@ -289,7 +300,14 @@ footer{border-top:1px solid var(--line-soft);padding:48px 0 34px;background:var(
             <span class="price-old">281€</span>
             <div class="price-now">197<small>€</small></div>
             <span class="price-save">✦ Économise 84€ aujourd'hui</span>
-            <a href="#" class="btn btn-gold">Obtenir la Méthode <span class="arrow">→</span></a>
+            <span class="pp-cd-label">L'offre se termine dans</span>
+            <span class="countdown pp-countdown">
+              <span class="cd-box"><b class="js-j">06</b><span>Jours</span></span>
+              <span class="cd-box"><b class="js-h">00</b><span>H</span></span>
+              <span class="cd-box"><b class="js-m">00</b><span>Min</span></span>
+              <span class="cd-box"><b class="js-s">00</b><span>Sec</span></span>
+            </span>
+            <a href="#" class="btn btn-gold">Obtenir ÉMIA Method <span class="arrow">→</span></a>
             <p class="price-note">Accès immédiat · Paiement sécurisé</p>
           </div>
         </div>
@@ -308,12 +326,12 @@ footer{border-top:1px solid var(--line-soft);padding:48px 0 34px;background:var(
         <div class="prod-label">Volume I — Transformation</div><h3>ÉMIA BODY</h3>
         <div class="prod-price">147€</div>
         <ul class="prod-list">
-          <li>ÉMIA Méthod</li>
+          <li>ÉMIA Méthod — Challenge 12 semaines</li>
           <li>Comprendre et sculpter une silhouette harmonieuse</li>
           <li>Les fondamentaux de la prise de muscle &amp; de la perte de graisse</li>
-          <li>Sommeil, stress &amp; récupération</li>
+          <li>Sommeil, Stress &amp; Récupération</li>
           <li>Le rôle du cardio &amp; de la musculation</li>
-          <li>Tracker, journal &amp; objectifs</li>
+          <li>Tracker, Journal &amp; Objectifs</li>
         </ul>
         <a href="#pack" class="btn btn-ghost">Choisir</a>
       </div>
@@ -325,9 +343,9 @@ footer{border-top:1px solid var(--line-soft);padding:48px 0 34px;background:var(
           <li>Les fondations : manger anti-inflammatoire</li>
           <li>Manger selon ton cycle féminin — bureau, restaurant, voyage</li>
           <li>Plan de la semaine type</li>
-          <li>Liste de courses idéales</li>
-          <li>Recettes, Smoothies &amp; Juices</li>
-          <li>Rituels &amp; habitudes qui transforment</li>
+          <li>Liste de courses idéale</li>
+          <li>Recettes, Smoothies &amp; Healthy Juices</li>
+          <li>Rituels &amp; Habitudes qui transforment</li>
         </ul>
         <a href="#pack" class="btn btn-ghost">Choisir</a>
       </div>
@@ -337,10 +355,10 @@ footer{border-top:1px solid var(--line-soft);padding:48px 0 34px;background:var(
         <div class="prod-price">67€</div>
         <ul class="prod-list">
           <li>Challenge Glow Up 30 jours</li>
-          <li>Routine Glow Up matin &amp; soir</li>
-          <li>Journal de gratitude &amp; intentions</li>
-          <li>Trackers &amp; outils ÉMIA</li>
-          <li>Bien-être &amp; self-care</li>
+          <li>Routine Glow Up Matin &amp; Soir</li>
+          <li>Journal de Gratitude &amp; Intentions</li>
+          <li>Trackers &amp; Outils ÉMIA</li>
+          <li>Bien-être &amp; Self-Care</li>
           <li>Devenir magnétique</li>
         </ul>
         <a href="#pack" class="btn btn-ghost">Choisir</a>
@@ -353,10 +371,10 @@ footer{border-top:1px solid var(--line-soft);padding:48px 0 34px;background:var(
 <section class="sec" id="acces" style="padding:30px 0 90px">
   <div class="wrap">
     <div class="guar-row">
-      <div class="guar reveal d1"><div class="gi">⚡</div><h4>Accès immédiat</h4><p>Disponible dès le paiement validé.</p></div>
-      <div class="guar reveal d2"><div class="gi">▢</div><h4>Sur tous les écrans</h4><p>Téléphone, tablette, ordinateur.</p></div>
-      <div class="guar reveal d3"><div class="gi">⤓</div><h4>Lecture hors-ligne</h4><p>Télécharge-le et lis-le partout.</p></div>
-      <div class="guar reveal d4"><div class="gi">🔒</div><h4>Paiement sécurisé</h4><p>Transaction cryptée et protégée.</p></div>
+      <div class="guar reveal d1"><div class="gi"><svg viewBox="0 0 24 24" fill="none" stroke="#1C1813" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16.5 9 10.5 15.5 7.5 12.5"/></svg></div><h4>Accès immédiat</h4><p>Disponible dès le paiement validé.</p></div>
+      <div class="guar reveal d2"><div class="gi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3.5" width="20" height="13" rx="2"/><line x1="8.5" y1="20.5" x2="15.5" y2="20.5"/><line x1="12" y1="16.5" x2="12" y2="20.5"/></svg></div><h4>Sur tous les écrans</h4><p>Téléphone, tablette, ordinateur.</p></div>
+      <div class="guar reveal d3"><div class="gi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div><h4>Lecture hors-ligne</h4><p>Télécharge-le et lis-le partout.</p></div>
+      <div class="guar reveal d4"><div class="gi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10.5" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/><circle cx="12" cy="15.5" r="1.2" fill="currentColor" stroke="none"/></svg></div><h4>Paiement sécurisé</h4><p>Transaction cryptée et protégée.</p></div>
     </div>
   </div>
 </section>
@@ -394,7 +412,7 @@ footer{border-top:1px solid var(--line-soft);padding:48px 0 34px;background:var(
     <div class="foot-grid">
       <div><div class="foot-logo">ÉMIA<span>.</span></div><div class="foot-tag">The Art of Becoming Her</div></div>
       <div class="foot-cols">
-        <div class="foot-col"><h5>Collection</h5><a href="#volumes">ÉMIA BODY</a><a href="#volumes">ÉMIA NUTRITION</a><a href="#volumes">ÉMIA GLOW</a><a href="#pack">La Méthode</a></div>
+        <div class="foot-col"><h5>Collection</h5><a href="#volumes">ÉMIA BODY</a><a href="#volumes">ÉMIA NUTRITION</a><a href="#volumes">ÉMIA GLOW</a><a href="#pack">ÉMIA Method</a></div>
         <div class="foot-col"><h5>Infos</h5><a href="#faq">FAQ</a><a href="#acces">Accès</a><a href="https://www.instagram.com/emiegmsfit" target="_blank" rel="noopener">Contact · Instagram</a></div>
         <div class="foot-col"><h5>Légal</h5><a href="#">Mentions légales</a><a href="#">CGV</a><a href="#">Confidentialité</a></div>
       </div>
@@ -413,17 +431,18 @@ document.querySelectorAll('.faq-q').forEach(q=>q.addEventListener('click',()=>{
   document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
   if(!o)it.classList.add('open');
 }));
-/* COUNTDOWN — 5 jours.
+/* COUNTDOWN — 6 jours.
    Pour une vraie date fixe, remplace la ligne 'end' par :
    const end = new Date('2026-06-30T23:59:59').getTime(); */
-const end = Date.now() + 5*24*60*60*1000;
+const end = Date.now() + 6*24*60*60*1000;
 function pad(n){return String(n).padStart(2,'0')}
+function set(cls,v){document.querySelectorAll('.'+cls).forEach(e=>e.textContent=v)}
 function tick(){
   let d=end-Date.now(); if(d<0)d=0;
-  document.getElementById('cd-j').textContent=pad(Math.floor(d/86400000));
-  document.getElementById('cd-h').textContent=pad(Math.floor(d/3600000)%24);
-  document.getElementById('cd-m').textContent=pad(Math.floor(d/60000)%60);
-  document.getElementById('cd-s').textContent=pad(Math.floor(d/1000)%60);
+  set('js-j',pad(Math.floor(d/86400000)));
+  set('js-h',pad(Math.floor(d/3600000)%24));
+  set('js-m',pad(Math.floor(d/60000)%60));
+  set('js-s',pad(Math.floor(d/1000)%60));
 }
 tick();setInterval(tick,1000);
 </script>
