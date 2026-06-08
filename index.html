@@ -431,10 +431,10 @@ document.querySelectorAll('.faq-q').forEach(q=>q.addEventListener('click',()=>{
   document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
   if(!o)it.classList.add('open');
 }));
-/* COUNTDOWN — 6 jours.
-   Pour une vraie date fixe, remplace la ligne 'end' par :
-   const end = new Date('2026-06-30T23:59:59').getTime(); */
-const end = Date.now() + 6*24*60*60*1000;
+/* COUNTDOWN — échéance fixe : dimanche 14 juin 2026 à 23:59 (heure de Paris, CEST = UTC+2).
+   Le compte à rebours tourne en automatique pour tous les visiteurs.
+   Pour changer la date, modifie la ligne ci-dessous (garder +02:00 l'été, +01:00 l'hiver à Paris). */
+const end = new Date('2026-06-14T23:59:59+02:00').getTime();
 function pad(n){return String(n).padStart(2,'0')}
 function set(cls,v){document.querySelectorAll('.'+cls).forEach(e=>e.textContent=v)}
 function tick(){
