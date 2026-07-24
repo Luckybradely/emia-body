@@ -1,0 +1,417 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Freedom Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0806;
+    --bg2:#0f0c08;
+    --card:#141009;
+    --card-hi:#1a150d;
+    --line:rgba(201,153,46,.14);
+    --line-hi:rgba(232,184,75,.4);
+    --gold:#E8B84B;
+    --gold-2:#C9992E;
+    --green:#3ad48f;
+    --green-dim:#1f6b48;
+    --text:#f4ede0;
+    --muted:#8a7f6b;
+    --muted-2:#5c5445;
+    --danger:#e07a5f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:
+    radial-gradient(120% 60% at 50% -10%, rgba(201,153,46,.10), transparent 60%),
+    var(--bg);
+    color:var(--text);font-family:"Inter",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;padding:0 0 80px}
+  a{color:inherit}
+
+  /* top bar */
+  .topbar{display:flex;align-items:center;gap:22px;padding:14px 26px;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg, rgba(201,153,46,.06), transparent);
+    position:sticky;top:0;z-index:20;backdrop-filter:blur(8px)}
+  .brand{font-family:"Space Grotesk";font-weight:700;letter-spacing:.14em;font-size:13px;color:var(--gold)}
+  .brand span{color:var(--muted)}
+  .tabs{display:flex;gap:4px;margin-left:6px}
+  .tab{font-family:"Space Grotesk";font-weight:600;letter-spacing:.08em;font-size:12px;
+    color:var(--muted-2);padding:8px 16px;border-radius:8px;cursor:pointer;border:1px solid transparent;
+    background:none;transition:.15s;text-transform:uppercase}
+  .tab:hover{color:var(--muted)}
+  .tab.active{color:var(--gold);border-color:var(--line-hi);background:var(--card-hi)}
+  .spacer{flex:1}
+  .savepill{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:7px;
+    padding:7px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+  .dot.saving{background:var(--gold);box-shadow:0 0 8px var(--gold);animation:pulse 1s infinite}
+  @keyframes pulse{50%{opacity:.35}}
+
+  /* header */
+  .head{text-align:center;padding:46px 20px 10px}
+  .head h1{font-family:"Space Grotesk";font-weight:700;font-size:clamp(34px,6vw,60px);letter-spacing:-.02em}
+  .head h1 b{color:var(--gold);font-weight:700}
+  .head p{color:var(--muted);margin-top:10px;font-size:13px}
+
+  /* controls */
+  .controls{max-width:1240px;margin:26px auto 8px;padding:0 26px;
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .ctl{display:flex;align-items:center;gap:9px}
+  .ctl label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2)}
+  select,input[type=date]{background:var(--card);color:var(--text);border:1px solid var(--line);
+    border-radius:9px;padding:9px 13px;font-family:"Inter";font-size:13px;cursor:pointer;outline:none}
+  select:focus,input[type=date]:focus{border-color:var(--line-hi)}
+  input[type=date]{color-scheme:dark}
+  .btn{background:var(--card);color:var(--muted);border:1px solid var(--line);border-radius:9px;
+    padding:9px 14px;font-family:"Inter";font-size:12.5px;cursor:pointer;transition:.15s}
+  .btn:hover{border-color:var(--line-hi);color:var(--text)}
+  .btn.gold{background:linear-gradient(180deg,var(--gold),var(--gold-2));color:#1a1206;font-weight:600;border:none}
+  .btn.gold:hover{filter:brightness(1.06)}
+  .grow{flex:1}
+  .readonly-badge{font-size:11px;color:var(--gold);border:1px solid var(--line-hi);
+    padding:5px 10px;border-radius:20px;background:rgba(232,184,75,.06)}
+
+  /* grid */
+  .grid{max-width:1240px;margin:20px auto;padding:0 26px;
+    display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+  @media(max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:720px){.grid{grid-template-columns:repeat(2,1fr)}.topbar{gap:10px;padding:12px 16px;overflow-x:auto}.controls,.grid{padding:0 16px}}
+  @media(max-width:440px){.grid{grid-template-columns:1fr 1fr;gap:10px}}
+
+  .card{background:linear-gradient(180deg,var(--card),var(--bg2));
+    border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px;min-height:132px;
+    display:flex;flex-direction:column;gap:8px;transition:.18s;position:relative;overflow:hidden}
+  .card:hover{border-color:var(--line-hi);transform:translateY(-2px)}
+  .card .k{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .card .v{font-family:"JetBrains Mono";font-weight:700;font-size:30px;line-height:1;
+    color:var(--text);letter-spacing:-.02em;margin-top:2px}
+  .card.editable .v{cursor:text;border-bottom:1px dashed transparent;width:fit-content;min-width:24px;
+    padding-bottom:2px;outline:none}
+  .card.editable .v:hover{border-bottom-color:var(--line-hi)}
+  .card.editable .v:focus{border-bottom-color:var(--gold)}
+  .card.computed{background:linear-gradient(180deg,#101a13,#0b120d);border-color:rgba(58,212,143,.16)}
+  .card.computed .v{color:var(--green)}
+  .card.computed:hover{border-color:rgba(58,212,143,.4)}
+  .card .sub{font-size:11px;color:var(--muted-2);margin-top:auto;font-family:"JetBrains Mono"}
+  .card .unit{color:var(--muted);font-size:18px;font-family:"JetBrains Mono";font-weight:500}
+
+  /* progress goal */
+  .bar{height:6px;border-radius:6px;background:rgba(255,255,255,.05);margin-top:auto;overflow:hidden}
+  .bar > i{display:block;height:100%;border-radius:6px;
+    background:linear-gradient(90deg,var(--green-dim),var(--green));transition:width .4s}
+  .goalrow{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;color:var(--muted-2);margin-top:6px}
+  .goalrow .g{font-family:"JetBrains Mono";cursor:text;outline:none;border-bottom:1px dashed transparent;padding:0 2px}
+  .goalrow .g:hover{border-bottom-color:var(--line-hi)}
+  .goalrow .g:focus{border-bottom-color:var(--gold);color:var(--text)}
+
+  .mini{display:flex;gap:14px;margin-top:auto}
+  .mini > div{display:flex;flex-direction:column;gap:2px}
+  .mini .ml{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2)}
+  .mini .mv{font-family:"JetBrains Mono";font-size:15px;font-weight:700;color:var(--text);
+    cursor:text;outline:none;border-bottom:1px dashed transparent;width:fit-content;min-width:16px}
+  .mini .mv:hover{border-bottom-color:var(--line-hi)}
+  .mini .mv:focus{border-bottom-color:var(--gold)}
+
+  .foot{max-width:1240px;margin:8px auto;padding:0 26px;color:var(--muted-2);font-size:11.5px;line-height:1.6}
+  .empty{color:var(--muted);text-align:center;padding:60px;font-size:14px}
+</style>
+
+<div class="topbar">
+  <div class="brand">FREEDOM <span>• DASHBOARD</span></div>
+  <div class="tabs" id="tabs"></div>
+  <div class="spacer"></div>
+  <div class="savepill"><span class="dot" id="dot"></span><span id="saveTxt">Sauvegardé</span></div>
+</div>
+
+<div class="head">
+  <h1 id="title">Setter <b>Dashboard</b></h1>
+  <p id="subtitle">Suivi quotidien de l'équipe Freedom</p>
+</div>
+
+<div class="controls">
+  <div class="ctl">
+    <label>Membre</label>
+    <select id="setterSel"></select>
+  </div>
+  <div class="ctl">
+    <label>Date</label>
+    <input type="date" id="dateSel">
+  </div>
+  <button class="btn" id="addSetter">+ Membre</button>
+  <span class="readonly-badge" id="roBadge" style="display:none">Vue cumulée — lecture seule</span>
+  <div class="grow"></div>
+  <button class="btn" id="resetBtn">Réinitialiser le jour</button>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<div class="foot" id="foot"></div>
+
+<script>
+/* ---------- CONFIG : les 3 onglets ---------- */
+const eur = n => new Intl.NumberFormat('fr-FR').format(Math.round(n||0));
+const pct = n => (isFinite(n)? n.toFixed(1):'0.0')+'%';
+const rate=(a,b)=> b>0 ? (a/b)*100 : 0;
+
+const CONFIG = {
+  setter:{ title:['Setter','Dashboard'],
+    widgets:[
+      {k:'qualified_booked', label:'Qualified Booked Calls'},
+      {k:'yt_bookings',      label:'Qualified YT Bookings'},
+      {k:'showed',           label:'Calls Showed'},
+      {k:'cancelled',        label:'Cancelled Calls'},
+      {k:'rescheduled',      label:'Calls Rescheduled'},
+      {k:'on_calendar',      label:'Calls on the Calendar'},
+      {k:'daily_icp',        label:'Daily ICP', goal:'daily_icp'},
+      {k:'show_rate', label:'Show Rate', computed:v=>({val:pct(rate(v.showed,v.on_calendar)),
+        sub:`${v.showed||0} / ${v.on_calendar||0} planifiés`})},
+      {k:'cash_dms',         label:'Cash Collected in DMs', unit:'€'},
+      {k:'calls_proposed',   label:'Calls Proposed'},
+      {k:'followups',        label:"Follow Ups Daily", goal:'followups'},
+      {k:'new_convos',       label:"New Convo's Daily", goal:'new_convos'},
+      {k:'reply_rate', label:'Outbound Reply Rate', mini:[
+          {k:'ob_sent',label:'Envoyés'},{k:'ob_replies',label:'Réponses'}],
+        computed:v=>({val:pct(rate(v.ob_replies,v.ob_sent))})},
+      {k:'inbound',          label:'Inbound'},
+    ]},
+
+  closer:{ title:['Closer','Dashboard'],
+    widgets:[
+      {k:'calls_taken',   label:'Calls Taken'},
+      {k:'closes',        label:'Closes'},
+      {k:'close_rate', label:'Close Rate', computed:v=>({val:pct(rate(v.closes,v.calls_taken)),
+        sub:`${v.closes||0} / ${v.calls_taken||0} calls`})},
+      {k:'cash_collected',label:'Cash Collected', unit:'€'},
+      {k:'revenue',       label:'Revenue Generated', unit:'€'},
+      {k:'cash_per_call', label:'Cash / Call', computed:v=>({val:eur(v.calls_taken>0?v.cash_collected/v.calls_taken:0),unit:'€'})},
+      {k:'offers_made',   label:'Offers Made'},
+      {k:'deposits',      label:'Deposits Taken'},
+      {k:'followups',     label:'Follow Ups', goal:'followups'},
+      {k:'no_shows',      label:'No-Shows'},
+      {k:'objections',    label:'Objections Handled'},
+      {k:'pitch_rate', label:'Pitch → Close', computed:v=>({val:pct(rate(v.closes,v.offers_made)),
+        sub:`${v.closes||0} / ${v.offers_made||0} offres`})},
+    ]},
+
+  ceo:{ title:['CEO','Dashboard'],
+    widgets:[
+      {k:'cash_total',   label:'Cash Collected', unit:'€'},
+      {k:'revenue_total',label:'Revenue Total', unit:'€'},
+      {k:'booked_total', label:'Total Booked Calls'},
+      {k:'shows_total',  label:'Total Shows'},
+      {k:'global_show', label:'Global Show Rate', computed:v=>({val:pct(rate(v.shows_total,v.booked_total)),
+        sub:`${v.shows_total||0} / ${v.booked_total||0}`})},
+      {k:'closes_total', label:'Total Closes'},
+      {k:'global_close', label:'Global Close Rate', computed:v=>({val:pct(rate(v.closes_total,v.shows_total)),
+        sub:`${v.closes_total||0} / ${v.shows_total||0} shows`})},
+      {k:'new_clients',  label:'New Clients'},
+      {k:'active_clients',label:'Active Clients'},
+      {k:'cash_per_show', label:'Cash / Show', computed:v=>({val:eur(v.shows_total>0?v.cash_total/v.shows_total:0),unit:'€'})},
+      {k:'ad_spend',     label:'Ad Spend', unit:'€'},
+      {k:'roas', label:'ROAS', computed:v=>({val:(v.ad_spend>0?(v.revenue_total/v.ad_spend):0).toFixed(2)+'x'})},
+    ]},
+};
+
+/* ---------- État ---------- */
+let ROLE='setter', SETTER='__all__', DATE=today();
+let SETTERS=['Léandre'];
+let VALUES={};      // valeurs du contexte courant
+let GOALS={};       // objectifs par rôle
+let saveTimer=null;
+
+function today(){const d=new Date();return d.toISOString().slice(0,10);}
+function slug(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'x';}
+function dataKey(role,setterSlug,date){return `fd:v:${role}:${setterSlug}:${date}`;}
+function goalKey(role){return `fd:goals:${role}`;}
+
+/* ---------- Storage helpers ---------- */
+async function sget(key){ try{const r=await window.storage.get(key);return r?JSON.parse(r.value):null;}catch(e){return null;} }
+async function sset(key,val){ try{await window.storage.set(key,JSON.stringify(val));return true;}catch(e){return false;} }
+
+/* ---------- Init ---------- */
+async function init(){
+  const savedSetters=await sget('fd:setters');
+  if(savedSetters&&savedSetters.length)SETTERS=savedSetters;
+  document.getElementById('dateSel').value=DATE;
+  buildTabs();
+  bindControls();
+  await switchRole('setter');
+}
+
+function buildTabs(){
+  const t=document.getElementById('tabs');t.innerHTML='';
+  ['ceo','setter','closer'].forEach(r=>{
+    const b=document.createElement('button');
+    b.className='tab'+(r===ROLE?' active':'');
+    b.textContent=r.toUpperCase();
+    b.onclick=()=>switchRole(r);
+    t.appendChild(b);
+  });
+}
+
+function buildSetterSelect(){
+  const s=document.getElementById('setterSel');s.innerHTML='';
+  const all=document.createElement('option');all.value='__all__';all.textContent='Toute l\'équipe (cumul)';s.appendChild(all);
+  SETTERS.forEach(name=>{const o=document.createElement('option');o.value=name;o.textContent=name;s.appendChild(o);});
+  s.value=SETTER;
+}
+
+function bindControls(){
+  document.getElementById('setterSel').onchange=async e=>{SETTER=e.target.value;await load();};
+  document.getElementById('dateSel').onchange=async e=>{DATE=e.target.value||today();await load();};
+  document.getElementById('addSetter').onclick=async()=>{
+    const name=prompt('Nom du nouveau membre :');
+    if(!name)return;const n=name.trim();if(!n||SETTERS.includes(n))return;
+    SETTERS.push(n);await sset('fd:setters',SETTERS);buildSetterSelect();
+    SETTER=n;document.getElementById('setterSel').value=n;await load();
+  };
+  document.getElementById('resetBtn').onclick=async()=>{
+    if(SETTER==='__all__'){alert('Choisis un membre précis pour réinitialiser ses chiffres.');return;}
+    if(!confirm(`Réinitialiser les chiffres de ${SETTER} pour le ${DATE} ?`))return;
+    VALUES={};await sset(dataKey(ROLE,slug(SETTER),DATE),{});render();
+  };
+}
+
+async function switchRole(role){
+  ROLE=role;
+  const[a,b]=CONFIG[role].title;
+  document.getElementById('title').innerHTML=`${a} <b>${b}</b>`;
+  buildTabs();
+  GOALS=(await sget(goalKey(role)))||{};
+  buildSetterSelect();
+  await load();
+}
+
+/* charge les valeurs du contexte (membre + date), gère le cumul */
+async function load(){
+  const ro=SETTER==='__all__';
+  document.getElementById('roBadge').style.display=ro?'inline-block':'none';
+  document.getElementById('resetBtn').style.display=ro?'none':'inline-block';
+  if(ro){
+    VALUES={};
+    for(const name of SETTERS){
+      const v=await sget(dataKey(ROLE,slug(name),DATE))||{};
+      for(const key in v){VALUES[key]=(VALUES[key]||0)+(+v[key]||0);}
+    }
+  }else{
+    VALUES=await sget(dataKey(ROLE,slug(SETTER),DATE))||{};
+  }
+  render();
+}
+
+function flagSaving(){
+  document.getElementById('dot').classList.add('saving');
+  document.getElementById('saveTxt').textContent='Sauvegarde…';
+}
+function flagSaved(){
+  document.getElementById('dot').classList.remove('saving');
+  document.getElementById('saveTxt').textContent='Sauvegardé';
+}
+
+async function persist(){
+  if(SETTER==='__all__')return;
+  flagSaving();
+  await sset(dataKey(ROLE,slug(SETTER),DATE),VALUES);
+  flagSaved();
+}
+function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(persist,350);}
+
+async function persistGoals(){await sset(goalKey(ROLE),GOALS);}
+
+/* parse contenteditable → nombre */
+function parseNum(el){const n=parseFloat(el.textContent.replace(/[^\d.-]/g,''));return isNaN(n)?0:n;}
+
+function render(){
+  const grid=document.getElementById('grid');grid.innerHTML='';
+  const ro=SETTER==='__all__';
+  CONFIG[ROLE].widgets.forEach(w=>{
+    const card=document.createElement('div');
+    card.className='card';
+
+    // --- Widget calculé ---
+    if(w.computed){
+      card.classList.add('computed');
+      const out=w.computed(VALUES);
+      card.innerHTML=`<div class="k">${w.label}</div>
+        <div class="v">${out.unit?`${out.unit==='€'?eur(0)&&'':''}`:''}${out.val}${out.unit==='€'?' €':''}</div>`;
+      // fix unit rendering for currency-computed
+      if(out.unit==='€'){card.querySelector('.v').textContent=`${out.val} €`;}
+      if(w.mini){ // sous-champs éditables (ex: reply rate)
+        const mini=document.createElement('div');mini.className='mini';
+        w.mini.forEach(m=>{
+          const box=document.createElement('div');
+          box.innerHTML=`<div class="ml">${m.label}</div>`;
+          const val=document.createElement('div');
+          val.className='mv';val.textContent=VALUES[m.k]||0;
+          if(!ro){val.contentEditable=true;
+            val.onblur=()=>{VALUES[m.k]=parseNum(val);persist();render();};
+            val.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();val.blur();}};
+          }
+          box.appendChild(val);mini.appendChild(box);
+        });
+        card.appendChild(mini);
+      }else if(out.sub){
+        card.innerHTML+=`<div class="sub">${out.sub}</div>`;
+      }
+      grid.appendChild(card);return;
+    }
+
+    // --- Widget éditable (nombre / €) ---
+    card.classList.add('editable');
+    const isEur=w.unit==='€';
+    const disp=isEur?eur(VALUES[w.k]||0):(VALUES[w.k]||0);
+    card.innerHTML=`<div class="k">${w.label}</div>`;
+    const v=document.createElement('div');
+    v.className='v';
+    v.innerHTML= isEur ? `${disp} <span class="unit">€</span>` : `${disp}`;
+    const editSpan=isEur? v.childNodes[0] : v;
+    if(!ro){
+      // rends éditable uniquement la partie chiffre
+      if(isEur){
+        const num=document.createElement('span');num.textContent=eur(VALUES[w.k]||0);
+        num.contentEditable=true;num.style.outline='none';
+        const unit=document.createElement('span');unit.className='unit';unit.textContent=' €';
+        v.innerHTML='';v.appendChild(num);v.appendChild(unit);
+        num.onblur=()=>{VALUES[w.k]=parseNum(num);num.textContent=eur(VALUES[w.k]);persist();refreshComputed();};
+        num.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();num.blur();}};
+      }else{
+        v.contentEditable=true;
+        v.onblur=()=>{VALUES[w.k]=parseNum(v);persist();refreshComputed();};
+        v.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();v.blur();}};
+      }
+    }
+    card.appendChild(v);
+
+    // --- objectif / barre de progression ---
+    if(w.goal){
+      const goal=GOALS[w.goal]!=null?GOALS[w.goal]:10;
+      const cur=VALUES[w.k]||0;
+      const bar=document.createElement('div');bar.className='bar';
+      bar.innerHTML=`<i style="width:${Math.min(100,rate(cur,goal))}%"></i>`;
+      card.appendChild(bar);
+      const gr=document.createElement('div');gr.className='goalrow';
+      gr.innerHTML=`<span>Objectif</span>`;
+      const g=document.createElement('span');g.className='g';g.textContent=goal;
+      if(!ro){g.contentEditable=true;
+        g.onblur=()=>{GOALS[w.goal]=parseNum(g)||1;persistGoals();render();};
+        g.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();g.blur();}};
+      }
+      gr.appendChild(g);card.appendChild(gr);
+    }
+    grid.appendChild(card);
+  });
+
+  // footer contextuel
+  const who=SETTER==='__all__'?`toute l'équipe (${SETTERS.length} membre${SETTERS.length>1?'s':''})`:SETTER;
+  document.getElementById('foot').innerHTML=
+    `Onglet <b style="color:var(--gold)">${ROLE.toUpperCase()}</b> · ${who} · ${new Date(DATE).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}. `+
+    `Clique un chiffre pour l'éditer — les taux (verts) se calculent tout seuls et tout se sauvegarde automatiquement.`;
+}
+
+// recalcule les cartes vertes sans tout re-render (léger)
+function refreshComputed(){render();}
+
+init();
+</script>
